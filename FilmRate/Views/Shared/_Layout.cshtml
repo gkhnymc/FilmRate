@@ -1,0 +1,339 @@
+﻿@using FilmRate.Models
+<!DOCTYPE html>
+
+<html lang="en" class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <!-- Basic need -->
+    <title>Film Yorumla</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+    <!-- Mobile specific meta -->
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="~/Content/css/plugins.css">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link href="~/Content/css/Site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+</head>
+<body>
+    <div id="myloader-wrapper" style="display: none;">
+        <div id="myloader">
+        </div>
+    </div>
+    <!--preloading-->
+    <div id="preloader">
+        <img class="logo" src="~/Content/images/logo1.png" alt="" width="119" height="58">
+        <div id="status">
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!--end of preloading-->
+    <!--login form popup-->
+    <div class="login-wrapper" id="login-content">
+        <div class="login-content">
+            <a href="#" class="close">x</a>
+            <h3>Giriş Yap</h3>
+            <form method="post" id="LoginForm">
+                <div class="row">
+                    <label for="username">
+                        Kullanıcı Adı:
+                        <input type="text" name="UserName" id="username" placeholder="" required="required" />
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label for="password">
+                        Şifre:
+                        <input type="password" name="UserPassword" id="password" placeholder="" required="required" />
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="remember">
+                        <div>
+                            <input type="checkbox" name="remember" value="Remember me"><span>Beni Hatırla</span>
+                        </div>
+                        <a href="#">Şifremi Unuttum</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="button" onclick="PostSignIn()">Giriş Yap</button>
+                </div>
+            </form>
+            <div class="row">
+                <p>Devam Et</p>
+                <div class="social-btn-2">
+                    <a class="fb" href="#"><i class="ion-social-facebook"></i>Facebook</a>
+                    <a class="tw" href="#"><i class="ion-social-twitter"></i>twitter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end of login form popup-->
+    <!--signup form popup-->
+
+    <div class="login-wrapper" id="signup-content">
+        <div class="login-content">
+            <a href="#" class="close">x</a>
+            <h3>Kayıt Ol</h3>
+            <form method="post" id="SignUpForm">
+                <div class="row">
+                    <label for="username-2">
+                        Kullanıcı Adı:
+                        <input type="text" name="UserName" id="username-2" placeholder="" required="required" />
+                    </label>
+                </div>
+
+                <div class="row">
+                    <label for="email-2">
+                        email:
+                        <input type="text" name="Email" id="email-2" placeholder="" required="required" />
+                    </label>
+                </div>
+                <div class="row">
+                    <label for="password-2">
+                        Şifre:
+                        <input type="password" name="UserPassword" id="password-2" placeholder="" required="required" />
+                    </label>
+                </div>
+                <div class="row">
+                    <label for="repassword-2">
+                        Tekrar Şifre:
+                        <input type="password" name="password" id="repassword-2" placeholder="" required="required" />
+                    </label>
+                </div>
+                <div class="row">
+                    <button type="button" onclick="PostSignUp()">Kayıt Ol</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--end of signup form popup-->
+    <!-- BEGIN | Header -->
+    <header class="ht-header">
+        <div class="container">
+            <nav class="navbar navbar-default navbar-custom">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header logo">
+                    <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <div id="nav-icon1">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Index", "Home")"><img class="logo" src="~/Content/images/logo1.png" alt="" width="119" height="58"></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav flex-child-menu menu-left">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+
+                        <li><a href="@Url.Action("Index", "Home")">Anasayfa</a></li>
+
+                        <li><a href="@Url.Action("filmList", "Film")">Filmler</a></li>
+
+                        @if (SessionPersister.LoginedUser != null)
+                        {
+                            <li class="dropdown first">
+                                <a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+                                    Kullanıcı<i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </a>
+                                <ul class="dropdown-menu level1">
+                                    <li><a href="/Profile">Profil</a></li>
+                                    <li class="it-last"><a href="/UserRate">Oylanan</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+                    <ul class="nav navbar-nav flex-child-menu menu-right">
+                        @if (SessionPersister.LoginedUser == null || SessionPersister.LoginedUser.IsAdminUser)
+                        {
+                            <li class="loginLink"><a href="@Url.Action("signIn", "User")">Giriş Yap</a></li>
+                            <li class="btn signupLink"><a href="@Url.Action("signUp", "User")">Kayıt Ol</a></li>
+                        }
+                        else
+                        {
+                            <li class="btn "><a style="cursor:pointer" onclick="Logout()">Çıkış Yap</a></li>
+
+                        }
+
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </nav>
+
+            <!-- top search form -->
+           
+        </div>
+    </header>
+    <!-- END | Header -->
+
+
+    <div>
+        @RenderBody()
+    </div>
+
+
+
+    <!-- footer section-->
+    <footer class="ht-footer">
+        <div class="container">
+            <div class="flex-parent-ft">
+                <div class="flex-child-ft item1">
+                    <a href="index-2.html"><img class="logo" src="~/Content/images/logo1.png" alt="" width="119" height="58"></a>
+                    <p>
+                        5th Avenue st, manhattan<br>
+                        New York, NY 10001
+                    </p>
+                    <p>Call us: <a href="#">(+01) 202 342 6789</a></p>
+                </div>
+                <div class="flex-child-ft item2">
+                    <h4>Hakkında</h4>
+                    <ul>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blockbuster</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                
+                    </ul>
+                </div>
+                <div class="flex-child-ft item3">
+                    <h4>Yasal</h4>
+                    <ul>
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="flex-child-ft item4">
+                    <h4>Hesap</h4>
+                    <ul>
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Watchlist</a></li>
+                      
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="ft-copyright">
+            
+            <div class="backtotop">
+                <p><a href="#" id="back-to-top">Back to top  <i class="ion-ios-arrow-thin-up"></i></a></p>
+            </div>
+        </div>
+    </footer>
+    <!-- end of footer section-->
+
+    <script src="~/Content/js/jquery.js"></script>
+    <script src="~/Content/js/plugins.js"></script>
+    <script src="~/Content/js/plugins2.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+    <script src="~/Content/js/jquery.serializeObject.min.js"></script>
+    <script src="~/Content/js/bootstrap4-rating-input.min.js"></script>
+    <script src="https://use.fontawesome.com/5ac93d4ca8.js"></script>
+
+    <script>
+        var loading = null;
+        $(document).ready(function () {
+            loading = $('#myloader-wrapper');
+        });
+        PostSignUp = async () => {
+            let entity = $('#SignUpForm').serializeObject();
+            try {
+                let response = await fetch("/SignUp",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        alert(result.ErrorString);
+                        location.href = "/";
+                    }
+
+                }
+
+            } catch (e) {
+                alert(e.message);
+            }
+
+        }
+        PostSignIn = async () => {
+            loading.show();
+            let entity = $('#LoginForm').serializeObject();
+            try {
+                let response = await fetch("/SignIn",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    loading.hide();
+                    throw new Error(response.statusText);
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        loading.hide();
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        loading.hide();
+                        location.reload();
+                    }
+
+                }
+
+            } catch (e) {
+                loading.hide();
+                alert(e.message);
+            }
+        }
+        Logout = async () => {
+            let response = await fetch("/Logout", {
+                method: 'GET'
+            });
+            let result = await response.json();
+            if (result.Success) {
+                location.href="/";
+            }
+        }
+    </script>
+    @RenderSection("scripts", false)
+</body>
+</html>

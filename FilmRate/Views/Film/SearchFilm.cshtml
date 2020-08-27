@@ -1,0 +1,17 @@
+﻿@using FilmReview.Models
+@{ 
+    List<Film> MainList = Model as List<Film>;
+}
+@foreach (Film film in MainList)
+{
+    <div class="movie-item-style-2 movie-item-style-1">
+        <img src="/Files/FilmImages/@film.ImagePath" alt="">
+        <div class="hvr-inner">
+            <a href="/FilmDetail?ID=@film.ID"> Daha Fazla <i class="ion-android-arrow-dropright"></i> </a>
+        </div>
+        <div class="mv-item-infor">
+            <h6><a href="/FilmDetail?ID=@film.ID">@film.FilmName</a></h6>
+            <p class="rate"><i class="ion-android-star"></i><span>@film.Rate</span> /5</p>
+        </div>
+    </div>
+}

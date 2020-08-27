@@ -1,0 +1,227 @@
+﻿@using FilmReview.Models
+@using FilmRate.Models
+
+@{
+    ViewBag.Title = "filmDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Film MainFilm = Model as Film;
+    List<Comment> CommentList = MainFilm.Comments.ToList();
+    int isUserLogin = SessionPersister.LoginedUser == null ? -1 : 1;
+}
+<div class="hero mv-single-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single movie-single movie_single">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="movie-img sticky-sb">
+                    <img src="images/movie-single.jpg" alt="">
+                    <div><a style="cursor:pointer" onclick='window.location.href="http://"+"@MainFilm.TrailerLink"'; class="redbtn"> <i class="ion-play"></i> Fragman İzle</a></div>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="movie-single-ct main-content">
+                    <h1 class="bd-hd">@MainFilm.FilmName <span>@MainFilm.ReleaseDate.Year</span></h1>
+                    <div class="social-btn">
+                        <a href="#" class="parent-btn"><i class="ion-heart"></i> Favorilere Ekle</a>
+                        <div class="hover-bnt">
+                            <a href="#" class="parent-btn"><i class="ion-android-share-alt"></i>Paylaş</a>
+                            <div class="hvr-item">
+                                <a href="#" class="hvr-grow"><i class="ion-social-facebook"></i></a>
+                                <a href="#" class="hvr-grow"><i class="ion-social-twitter"></i></a>
+                                <a href="#" class="hvr-grow"><i class="ion-social-googleplus"></i></a>
+                                <a href="#" class="hvr-grow"><i class="ion-social-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="movie-rate">
+                        <div class="rate">
+                            <i class="ion-android-star"></i>
+                            <p>
+                                <span>@MainFilm.Rate</span> /5<br>
+                                <span class="rv">@MainFilm.Comments.Count</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="movie-tabs">
+                        <div class="tabs">
+                            <ul class="tab-links tabs-mv">
+                                <li class="active"><a href="#overview">Genel Bakış</a></li>
+                                <li><a href="#reviews"> Yorumlar</a></li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div id="overview" class="tab active">
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-12 col-xs-12">
+                                            <p>@MainFilm.FilmDescription</p>
+
+                                            <div class="mvsingle-item ov-item">
+                                                <a class="img-lightbox" data-fancybox-group="gallery" href="/Files/FilmImages/@MainFilm.ImagePath"><img src="/Files/FilmImages/@MainFilm.ImagePath" alt=""></a>
+
+                                            </div>
+                                            <div class="title-hd-sm">
+                                                <h4>Kullanıcı yorumları</h4>
+                                                <a href="#" class="time">Yapılan @MainFilm.Comments.Count Yorumu Göster <i class="ion-ios-arrow-right"></i></a>
+                                            </div>
+                                            <!-- movie user review -->
+
+                                        </div>
+                                        <div class="col-md-4 col-xs-12 col-sm-12">
+                                            <div class="sb-it">
+                                                <h6>Yönetmen: </h6>
+                                                <p>@MainFilm.Director</p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Tür:</h6>
+                                                <p>@MainFilm.Genre</p>
+                                            </div>
+                                            <div class="sb-it">
+                                                <h6>Yayın Tarihi:</h6>
+                                                <p>@MainFilm.ReleaseDate.ToString("dd/MM/yyyy")</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="reviews" class="tab review" style="padding-right:30px !important">
+                                    <div class="row">
+                                        <div class="rv-hd">
+                                            <div class="div">
+                                                <h2>@MainFilm.FilmName</h2>
+                                            </div>
+                                            <a style="cursor:pointer" onclick="ShowComments()" class="redbtn">Yorum Yap</a>
+                                        </div>
+
+                                    </div>
+                                    <div id="CommentTab" style="display:block">
+
+                                        <div class="row">
+                                            <div class="blog-detail-ct">
+                                                <div class="comments">
+                                                    <h4>@CommentList.Count Yorum</h4>
+                                                    @foreach (Comment comment in CommentList)
+                                                    {
+                                                        <div class="cmt-item flex-it">
+                                                            <div class="author-infor">
+                                                                <div class="flex-it2" style="color:yellow !important">
+                                                                    <h5>@comment.User.UserName</h5>
+                                                                </div>
+                                                                <div class="sb-it">
+                                                                    <p>@comment.ReleaseDate.ToString("dd/MM/yyyy")</p>
+                                                                </div>
+                                                                <p>@comment.CommentText</p>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div id="CommentForm" style="height:400px" class="blog-detail-ct">
+                                                <div class="comment-form">
+                                                    <h4>Yorum Yap</h4>
+                                                    <form method="post">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <textarea name="message" id="CommentText" placeholder="Mesaj"></textarea>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div style="margin-left:600px;color:yellow">
+                                                                    <input type="number"
+                                                                           name="inputName"
+                                                                           id="FilmRate"
+                                                                           class="rating"
+                                                                           data-icon-lib="fa"
+                                                                           data-active-icon="fa-star fa-2x"
+                                                                           data-inactive-icon="fa-star-o fa-2x"
+                                                                           value="0" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <a class="redbtn" style="cursor:pointer" onclick="AddComment('@isUserLogin','@MainFilm.ID')">Gönder</a>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        var loading = null;
+        $(document).ready(function () {
+            loading = $('#myloader-wrapper');
+        });
+        ShowComments = async () => {
+
+            $(window).scrollTop($('#CommentForm').offset().top - 200);
+        }
+        AddComment = async (isUserLogin, FilmID) => {
+            if (isUserLogin == '-1') {
+                $('.overlay').first().addClass("openform");
+                $('.overlay').first().click(function (e) {
+                    if ($(e.target).closest("#login-content").length > 0) {
+                        return false;
+                    }
+
+                    $('.overlay').first().removeClass("openform");
+
+                });
+            }
+            else {
+                loading.show();
+                let form = new FormData();
+                form.append("CommentText", $('#CommentText').val());
+                form.append("FilmID", FilmID);
+                form.append("FilmRate", $('#FilmRate').val());
+                try {
+                    let response = await fetch("/AddComment",
+                        {
+                            method: 'POST',
+                            body: form,
+
+                        }
+                    )
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                        loading.hide();
+                    }
+                    else {
+                        let result = await response.json();
+                        if (!result.Success) {
+                            loading.hide();
+                            alert(result.ErrorString);
+                        }
+                        else {
+                            loading.hide();
+                            location.reload();
+                        }
+
+                    }
+
+                } catch (e) {
+                    loading.hide();
+                    alert(e.message);
+                }
+            }
+        }
+    </script>
+
+}

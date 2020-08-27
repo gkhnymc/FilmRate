@@ -1,0 +1,69 @@
+﻿@using FilmRate.Models
+@using FilmReview.Models
+@{
+    ViewBag.Title = "userRate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Comment> CommentList = ViewBag.CommentList;
+    List<Film> FilmList = ViewBag.FilmList;
+}
+
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>@SessionPersister.LoginedUser.UserName's profile</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Rated movies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width2">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="user-information">
+                    
+                    <div class="user-fav">
+                        <p>Hesap</p>
+                        <ul>
+                            <li><a href="/Profile">Profil</a></li>
+                            <li><a href="/UserRate">Oylanan Filmler</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-fav">
+                        <p>Diğer</p>
+                        <ul>
+                            <li><a href="/Profile">Şifre Değiştir</a></li>
+                            <li><a style="cursor:pointer" onclick="Logout()">Çıkış Yap</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="topbar-filter">
+                    <p>Oylanan <span>@CommentList.Count film</span> bulundu</p>
+                    
+                </div>
+                @foreach (Comment comment in CommentList)
+                {
+                    var currentfilm = FilmList.Where(x => x.ID == comment.FilmID).FirstOrDefault();
+                    <div class="movie-item-style-2 userrate">
+                        <img src="/Files/FilmImages/@currentfilm.ImagePath" alt="">
+                        <div class="mv-item-infor">
+                            <h6><a href="#">@currentfilm.FilmName <span>(@currentfilm.ReleaseDate.Year)</span></a></h6>
+                           
+                            <p class="time sm-text">yorumun:</p>
+                            <p>@comment.CommentText</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

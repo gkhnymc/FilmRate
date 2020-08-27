@@ -1,0 +1,39 @@
+﻿@using FilmReview.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Film> MainList = Model as List<Film>;
+}
+
+
+<div class="slider movie-items">
+    <div class="container">
+        <div class="row">
+            <div class="social-link">
+                <p>Takip Et: </p>
+                <a href="#"><i class="ion-social-facebook"></i></a>
+                <a href="#"><i class="ion-social-twitter"></i></a>
+                <a href="#"><i class="ion-social-googleplus"></i></a>
+                <a href="#"><i class="ion-social-youtube"></i></a>
+            </div>
+            <div class="slick-multiItemSlider">
+                @foreach (Film film in MainList)
+                {
+                    <div class="movie-item">
+                        <div class="mv-img">
+                            <a href="#"><img src="~/Files/FilmImages/@film.ImagePath" alt="" width="285" height="437"></a>
+                        </div>
+                        <div class="title-in">
+                            <div class="cate">
+                                <span class="yell">@film.Genre</span>
+                            </div>
+                            <h6><a href="/FilmDetail?ID=@film.ID">@film.FilmName</a></h6>
+                            <p><i class="ion-android-star"></i><span>@film.Rate</span> /5</p>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

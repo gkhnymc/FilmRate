@@ -1,0 +1,180 @@
+﻿@using FilmReview.Models
+@using FilmRate.Models
+@{
+    ViewBag.Title = "profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    User LoginedUser = SessionPersister.LoginedUser;
+}
+
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>@LoginedUser.UserName’s profile</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="/">Anasayfa</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span>Profil</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-3 col-sm-12 col-xs-12">
+                <div class="user-information">
+                    <div class="user-fav">
+                        <p>Hesap </p>
+                        <ul>
+                            <li class="active"><a href="/Profile">Profil</a></li>
+                            <li><a href="/UserRate">Oylanan Filmler</a></li>
+                        </ul>
+                    </div>
+                    <div class="user-fav">
+                        <p>Diğer</p>
+                        <ul>
+                            <li><a href="#">Şifre Değiştir</a></li>
+                            <li><a onclick="Logout()" style="cursor:pointer">Çıkış Yap</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="form-style-1 user-pro" action="#">
+                    <form class="user">
+                        <h4>01. Profil Detayı</h4>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Kullanıcı Adı</label>
+                                <input id="UserName" type="text" placeholder="@LoginedUser.UserName">
+                            </div>
+                            <div class="col-md-6 form-it">
+                                <label>Email Adres</label>
+                                <input id="Email" type="text" placeholder="@LoginedUser.Email">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <a class="redbtn" style="cursor:pointer" onclick="SaveProfile()">Kaydet</a>
+                            </div>
+                        </div>
+                    </form>
+                    <form action="#" class="password">
+                        <h4>02. Şifre Değiştir</h4>
+                        
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Yeni Şifre</label>
+                                <input id="UserPassword" type="password" placeholder="***************">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-it">
+                                <label>Yeni Şifre Onay </label>
+                                <input id="RePassword" type="password" placeholder="*************** ">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="submit" type="button" onclick="UpdatePassword()" value="Değiştir">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        SaveProfile = async () => {
+            let entity = {
+                'UserName': $('#UserName').val(),
+                'Email': $('#Email').val()
+            };
+            loading.show();
+
+            try {
+                let response = await fetch("/UpdateProfile",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    loading.hide();
+                    throw new Error(response.statusText);
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        loading.hide();
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        loading.hide();
+                        location.reload();
+                    }
+
+                }
+
+            } catch (e) {
+                loading.hide();
+                alert(e.message);
+            }
+        }
+        UpdatePassword = async () => {
+            if ($('#UserPassword').val() != $('#RePassword').val()) {
+                alert("Aynı şifreyi girmelisiniz!");
+                return;
+            }
+            let entity = {
+                'UserPassword':$('#UserPassword').val()
+            }
+            loading.show();
+
+            try {
+                let response = await fetch("/UpdatePassword",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    loading.hide();
+                    throw new Error(response.statusText);
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        loading.hide();
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        loading.hide();
+                        location.reload();
+                    }
+
+                }
+
+            } catch (e) {
+                loading.hide();
+                alert(e.message);
+            }
+        }
+    </script>
+}
+

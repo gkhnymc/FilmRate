@@ -1,0 +1,85 @@
+﻿@using FilmReview.Models
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+    List<User> MainList = Model as List<User>;
+}
+<div id="myloader-wrapper" style="display: none;">
+    <div id="myloader">
+    </div>
+</div>
+
+<table class="table table-striped table-dark">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (User u in MainList)
+        {
+            <tr>
+                <td>@u.ID</td>
+                <td>@u.UserName</td>
+                <td>@u.Email</td>
+                <td><button class="btn btn-danger" onclick="DeleteUser('@u.ID')"><i class="far fa-trash-alt"></i></button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@section scripts{
+    <script>
+        var loading = null;
+        $(document).ready(function () {
+            loading = $('#myloader-wrapper');
+        });
+        DeleteUser = async (UserID) => {
+            $('#DeleteButton').click(function () {
+                ConfirmDelete(UserID);
+            });
+            $('#DeleteModal').modal('show');
+        }
+        ConfirmDelete = async (UserID) => {
+            loading.show();
+            let entity = {
+                'ID': UserID
+            }
+           try {
+                let response = await fetch("/DeleteUser",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    loading.hide();
+                    throw new Error(response.statusText);
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        loading.hide();
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        loading.hide();
+                        location.reload();
+                    }
+
+                }
+
+            } catch (e) {
+                loading.hide();
+                alert(e.message);
+            }
+        }
+    </script>
+}

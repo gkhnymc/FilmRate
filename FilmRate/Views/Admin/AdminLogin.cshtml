@@ -1,0 +1,96 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AdminLogin</title>
+    <link href="~/Content/css/Site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+</head>
+<body>
+    <div id="myloader-wrapper" style="display: none;">
+        <div id="myloader">
+        </div>
+    </div>
+    <form method="post" action="javascript:void(0)" onsubmit="PostLogin(this)">
+        <div class="container">
+            <div class="vertical-center">
+                <div class="text-center">
+                    <img src="~/Content/images/logo1.png" width="120" />
+                    <br />
+                    <br />
+                    <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input required id="UserName" value="@ViewBag.UserName" name="UserName" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <div class="input-group mb-3 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input required id="Password" type="password" name="UserPassword" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Login">
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="~/Content/js/jquery.serializeObject.min.js"></script>
+    <script>
+        var loading = null;
+         $(document).ready(function () {
+            loading = $('#myloader-wrapper');
+        });
+        PostLogin = async (obj) => {
+            loading.show();
+            let entity = $(obj).serializeObject();
+            try {
+                let response = await fetch("/SignIn",
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(entity),
+                        headers: {
+                            Accept: 'application/json',
+                            credentials: 'same-origin',
+                            "Content-Type": 'application/json'
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    throw new Error(response.statusText);
+                    loading.hide();
+                }
+                else {
+                    let result = await response.json();
+                    if (!result.Success) {
+                        loading.hide();
+                        alert(result.ErrorString);
+                    }
+                    else {
+                        loading.hide();
+                        location.href = "/AdminPanel";
+                    }
+
+                }
+
+            } catch (e) {
+                loading.hide();
+                alert(e.message);
+            }
+        }
+    </script>
+</body>
+</html>

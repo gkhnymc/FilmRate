@@ -1,0 +1,49 @@
+﻿@using FilmReview.Models
+@{
+    Film SelectedFilm = Model as Film;
+}
+
+<form id="EditForm">
+    <input hidden id="ID" name="ID" value="@SelectedFilm.ID" />
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:118px">FilmName</span>
+        </div>
+        <input type="text" class="form-control" id="FilmName" name="FilmName" value="@SelectedFilm.FilmName" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:118px">Genre</span>
+        </div>
+        <input type="text" class="form-control" id="Genre" name="Genre" value="@SelectedFilm.Genre" aria-describedby="inputGroup-sizing-sm">
+    </div>
+
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:118px">Release Date</span>
+        </div>
+        <input type="text" value="@SelectedFilm.ReleaseDate.ToString("dd/MM/yyyy")" class="form-control datepicker" aria-label="Small" name="ReleaseDate" id="ReleaseDate" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:118px">Director</span>
+        </div>
+        <input type="text" class="form-control" id="Director" name="Director" value="@SelectedFilm.Director" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" style="width:118px">Film Description</span>
+        </div>
+        <textarea id="FilmDesc" name="FilmDescription" class="form-control" aria-label="With textarea"> @SelectedFilm.FilmDescription</textarea>
+    </div>
+    <div class="input-group input-group-sm mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-sm" style="width:118px">Trailer Link</span>
+        </div>
+        <input type="text" class="form-control" id="TrailerLink" name="TrailerLink" value="@SelectedFilm.TrailerLink" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+    </div>
+    <div class="custom-file mb-3">
+        <input type="file" class="custom-file-input" id="File1" aria-describedby="inputGroupFileAddon01">
+        <label class="custom-file-label" for="inputGroupFile01">Choose a Photo</label>
+    </div>
+</form>
