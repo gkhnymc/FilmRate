@@ -329,6 +329,7 @@
     <Content Include="Content\js\plugins.js" />
     <Content Include="Content\js\plugins2.js" />
     <Content Include="Global.asax" />
+    <Content Include="screenshot.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
